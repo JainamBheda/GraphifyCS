@@ -15,12 +15,11 @@
         /* Layer Diagram */
         #layerContainer {
             margin: 20px auto;
-            width: 300px;
+            width: 320px;
             display: flex;
             flex-direction: column-reverse;
             border: 2px solid #333;
             border-radius: 10px;
-            overflow: hidden;
         }
         .layer {
             padding: 20px;
@@ -53,7 +52,7 @@
             border-radius: 5px;
             width: 220px;
             text-align: left;
-            z-index: 10;
+            z-index: 1000; /* keep above everything */
         }
         .layer:hover .tooltip {
             display: block;
