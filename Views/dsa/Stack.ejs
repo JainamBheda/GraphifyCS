@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #f4f4f4; 
+            margin: 0; 
+            padding: 0; 
+        }
+        h1 { margin-top: 20px; color: #333; }
+
+        #stackContainer { 
+            margin: 20px auto; 
+            width: 200px; 
+            min-height: 200px; 
+            border: 2px solid #333; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column-reverse; 
+            align-items: center;
+            background: #fff;
+        }
+        .stack-item { 
+            background: #4CAF50; 
+            color: white; 
+            margin: 5px 0; 
+            padding: 10px; 
+            border-radius: 5px; 
+            width: 80%; 
+            text-align: center;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: slideIn 0.3s forwards;
+        }
+        @keyframes slideIn {
+            to { transform: translateY(0); opacity: 1; }
+        }
+        button { margin: 5px; padding: 10px 20px; cursor: pointer; }
+        input { padding: 8px; width: 120px; }
+
+        .content {
+            text-align: left;
+            margin: 40px auto;
+            max-width: 800px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        pre {
+            background: #222; 
+            color: #eee; 
+            padding: 10px; 
+            border-radius: 5px; 
+            overflow-x: auto;
+        }
+        table {
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #333; 
+            padding: 8px; 
+            text-align: center;
+        }
+        th { background: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Stack Visualizer</h1>
+
+    <input type="text" id="operationInput" placeholder="Enter value">
+    <button onclick="pushItem()">Push</button>
+    <button onclick="popItem()">Pop</button>
+
+    <div id="stackContainer"></div>
+
+    <a href="/">Back to Home</a>
+
+    <!-- Content Section -->
+    <div class="content">
+        <h2>What is a Stack?</h2>
+        <p>
+            A <b>stack</b> is a linear data structure that follows the <b>LIFO (Last In, First Out)</b> principle. 
+            The last element added is the first one to be removed. 
+            It is widely used in expression evaluation, function calls, and backtracking algorithms.
+        </p>
+
+        <h2>Code Snippets</h2>
+        <h3>Java</h3>
+        <pre>
+import java.util.Stack;
+public class Main {
+    public static void main(String[] args) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(10);
+        stack.push(20);
+        System.out.println(stack.pop()); // 20
+    }
+}
+        </pre>
+
+        <h3>Python</h3>
+        <pre>
+stack = []
+stack.append(10)
+stack.append(20)
+print(stack.pop())  # 20
+        </pre>
+
+        <h3>C</h3>
+        <pre>
+#define SIZE 100
+int stack[SIZE], top = -1;
+
+void push(int val) {
+    stack[++top] = val;
+}
+int pop() {
+    return stack[top--];
+}
+        </pre>
+
+        <h3>JavaScript</h3>
+        <pre>
+let stack = [];
+stack.push(10);
+stack.push(20);
+console.log(stack.pop()); // 20
+        </pre>
+
+        <h2>Time Complexity</h2>
+        <table>
+            <tr><th>Operation</th><th>Time Complexity</th></tr>
+            <tr><td>Push</td><td>O(1)</td></tr>
+            <tr><td>Pop</td><td>O(1)</td></tr>
+            <tr><td>Peek</td><td>O(1)</td></tr>
+            <tr><td>Search</td><td>O(n)</td></tr>
+        </table>
+
+        <h2>Advantages</h2>
+        <ul>
+            <li>Simple and easy to implement</li>
+            <li>Efficient for managing function calls (recursion)</li>
+            <li>Useful in parsing and expression evaluation</li>
+        </ul>
+
+        <h2>Disadvantages</h2>
+        <ul>
+            <li>Limited size (in case of static stack)</li>
+            <li>Not suitable for random access</li>
+            <li>Can cause overflow/underflow issues</li>
+        </ul>
+    </div>
+
+    <script src="/js/stack.js"></script>
+</body>
+</html>

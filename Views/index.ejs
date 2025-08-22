@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional: Animate.css for smooth animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        .hero {
+            background: url('https://cdn.pixabay.com/photo/2018/05/08/08/33/code-3385200_1280.jpg') no-repeat center center;
+            background-size: cover;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: rgb(23, 11, 11);
+            /* text-shadow: 2px 2px 2px black; */
+        }
+        .hero h1 {
+            font-size: 3rem;
+        }
+        .hero p {
+            font-size: 1.5rem;
+        }
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar (same as previous Bootstrap navbar) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Graphify CS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- DSA Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dsaDropdown" role="button" data-bs-toggle="dropdown">DSA</a>
+                        <ul class="dropdown-menu" aria-labelledby="dsaDropdown">
+                            <li><a class="dropdown-item" href="/dsa/array">Array</a></li>
+                            <li><a class="dropdown-item" href="/dsa/stack">Stack</a></li>
+                            <li><a class="dropdown-item" href="/dsa/queue">Queue</a></li>
+                            <li><a class="dropdown-item" href="/dsa/linkedlist">Linked List</a></li>
+                            <li><a class="dropdown-item" href="/dsa/tree">Tree</a></li>
+                            <li><a class="dropdown-item" href="/dsa/graph">Graph</a></li>
+                        </ul>
+                    </li>
+                    <!-- CN Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="cnDropdown" role="button" data-bs-toggle="dropdown">CN</a>
+                        <ul class="dropdown-menu" aria-labelledby="cnDropdown">
+                            <li><a class="dropdown-item" href="/cn/arp">ARP</a></li>
+                            <li><a class="dropdown-item" href="/cn/routing">Routing</a></li>
+                            <li><a class="dropdown-item" href="/cn/tcpip">TCP/IP</a></li>
+                        </ul>
+                    </li>
+                    <!-- OS Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="osDropdown" role="button" data-bs-toggle="dropdown">OS</a>
+                        <ul class="dropdown-menu" aria-labelledby="osDropdown">
+                            <li><a class="dropdown-item" href="/os/scheduling">Scheduling</a></li>
+                            <li><a class="dropdown-item" href="/os/paging">Paging</a></li>
+                            <li><a class="dropdown-item" href="/os/disk">Disk Scheduling</a></li>
+                        </ul>
+                    </li>
+                    <!-- DBMS Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dbmsDropdown" role="button" data-bs-toggle="dropdown">DBMS</a>
+                        <ul class="dropdown-menu" aria-labelledby="dbmsDropdown">
+                            <li><a class="dropdown-item" href="/dbms/er">ER Diagram</a></li>
+                            <li><a class="dropdown-item" href="/dbms/normalization">Normalization</a></li>
+                            <li><a class="dropdown-item" href="/dbms/queries">Queries</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="animate__animated animate__fadeInDown">Welcome to Graphify CS</h1>
+        <p class="animate__animated animate__fadeInUp animate__delay-1s">Visualize & Learn Data Structures, OS, CN, and DBMS</p>
+        <a href="#dsaSection" class="btn btn-primary mt-3 animate__animated animate__bounce">Explore DSA</a>
+    </section>
+
+    <!-- Optional: Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

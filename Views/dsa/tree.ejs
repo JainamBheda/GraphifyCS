@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <style>
+    body { font-family: Arial; text-align:center; background:#f4f4f4; margin:0; padding:0;}
+    h1 { margin:20px 0; color:#333;}
+    #treeContainer { 
+      margin:20px auto; 
+      display:flex; 
+      flex-wrap: wrap; 
+      justify-content:center; 
+      gap:20px;
+      min-height:200px;
+      padding:10px;
+      border:2px solid #333;
+      border-radius:10px;
+      background:#fff;
+    }
+    .tree-node { 
+      background:#4CAF50; 
+      color:white; 
+      padding:15px 20px; 
+      border-radius:8px; 
+      font-weight:bold;
+      opacity:0; 
+      transform: translateY(-20px);
+      transition: all 0.4s ease;
+      position: relative;
+    }
+    .tree-node.show { opacity:1; transform: translateY(0);}
+    input, select, button { padding:8px 12px; margin:5px; border-radius:5px;}
+    button { cursor:pointer; background:#2196F3; color:white; border:none;}
+    button:disabled { background:#888; cursor:not-allowed;}
+    .content { text-align:left; margin:40px auto; max-width:800px; background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+  </style>
+</head>
+<body>
+  <h1>Dynamic Tree Visualizer</h1>
+
+  <input type="text" id="valueInput" placeholder="Node Value">
+  <select id="parentSelect">
+    <option value="">Select Parent (Root if empty)</option>
+  </select>
+  <select id="positionSelect">
+    <option value="left">Left</option>
+    <option value="right">Right</option>
+  </select>
+  <button onclick="addNode()">Add Node</button>
+
+  <div id="traversalOptions" style="margin:15px;">
+    <button onclick="traverse('pre')">Preorder</button>
+    <button onclick="traverse('in')">Inorder</button>
+    <button onclick="traverse('post')">Postorder</button>
+    <button onclick="traverse('level')">Level Order</button>
+  </div>
+
+  <div id="treeContainer"></div>
+  <a href="/">Back to Home</a>
+
+  <div class="content">
+    <h2>Tree Traversals</h2>
+    <p>
+      <b>Preorder:</b> Root → Left → Right<br>
+      <b>Inorder:</b> Left → Root → Right<br>
+      <b>Postorder:</b> Left → Right → Root<br>
+      <b>Level Order:</b> Visit nodes level by level
+    </p>
+  </div>
+
+<script>
+let treeData = { value: null, left: null, right: null };
+let nodeList = []; // flat list for parent select
+const container = document.getElementById("treeContainer");
+const parentSelect = document.getElementById("parentSelect");
+
+function renderTree(node, containerEl){
+  if(!node) return;
+  const nodeEl = document.createElement("div");
+  nodeEl.className = "tree-node show";
+  nodeEl.innerText = node.value;
+  containerEl.appendChild(nodeEl);
+
+  // recursive for left/right
+  if(node.left || node.right){
+    const subContainer = document.createElement("div");
+    subContainer.style.display="flex";
+    subContainer.style.gap="20px";
+    containerEl.appendChild(subContainer);
+    renderTree(node.left, subContainer);
+    renderTree(node.right, subContainer);
+  }
+}
+
+function refreshParentOptions(){
+  parentSelect.innerHTML='<option value="">Select Parent (Root if empty)</option>';
+  nodeList.forEach((n,i)=>{
+    parentSelect.innerHTML += `<option value="${i}">${n.value}</option>`;
+  });
+}
+
+function addNode(){
+  const val = document.getElementById("valueInput").value.trim();
+  if(!val) return alert("Enter a value!");
+
+  const parentIndex = parentSelect.value;
+  const pos = document.getElementById("positionSelect").value;
+
+  const newNode = { value: val, left: null, right: null };
+  if(!treeData.value){
+    treeData = newNode;
+    nodeList.push(treeData);
+  } else if(parentIndex !== ""){
+    const parentNode = nodeList[parentIndex];
+    if(pos==="left" && !parentNode.left) parentNode.left = newNode;
+    else if(pos==="right" && !parentNode.right) parentNode.right = newNode;
+    else return alert("Position already filled");
+    nodeList.push(newNode);
+  } else return alert("Select a parent for new node");
+
+  refreshParentOptions();
+  renderAll();
+  document.getElementById("valueInput").value="";
+}
+
+function renderAll(){
+  container.innerHTML="";
+  renderTree(treeData, container);
+}
+
+function traverse(type){
+  let order = [];
+  function preorder(node){ if(!node) return; order.push(node.value); preorder(node.left); preorder(node.right);}
+  function inorder(node){ if(!node) return; inorder(node.left); order.push(node.value); inorder(node.right);}
+  function postorder(node){ if(!node) return; postorder(node.left); postorder(node.right); order.push(node.value);}
+  function levelorder(root){
+    if(!root) return;
+    const queue=[root];
+    while(queue.length){
+      const n=queue.shift();
+      order.push(n.value);
+      if(n.left) queue.push(n.left);
+      if(n.right) queue.push(n.right);
+    }
+  }
+
+  if(type==="pre") preorder(treeData);
+  else if(type==="in") inorder(treeData);
+  else if(type==="post") postorder(treeData);
+  else if(type==="level") levelorder(treeData);
+
+  // animate
+  container.innerHTML="";
+  order.forEach((val,i)=>{
+    const node=document.createElement("div");
+    node.className="tree-node";
+    node.innerText=val;
+    container.appendChild(node);
+    setTimeout(()=>node.classList.add("show"), i*500);
+  });
+}
+
+renderAll();
+refreshParentOptions();
+</script>
+</body>
+</html>

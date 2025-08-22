@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    h1 {
+      margin: 20px;
+      color: #333;
+    }
+    .content {
+      background-color: #fff;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      max-width: 800px;
+      margin: 20px auto;
+      text-align: left;
+    }
+    .content h2 {
+      color: #4CAF50;
+    }
+    .content p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .content ul {
+      list-style-type: square;
+      margin-left: 20px;
+    }
+    .content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    #arpTable {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    #arpTable th, #arpTable td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    #arpTable th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #result {
+      margin: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .arp-request, .arp-reply {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.5s ease;
+    }
+    .arp-request.show {
+      background-color: #FF9800;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .arp-reply.show {
+      background-color: #4CAF50;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .arp-reply.fail.show {
+      background-color: #f44336;
+    }
+  </style>
+</head>
+<body>
+  <h1>ARP Simulation</h1>
+
+  <div>
+    <input type="text" id="ipInput" placeholder="Enter IP to resolve">
+    <button onclick="sendARP()">Send ARP Request</button>
+  </div>
+
+  <div>
+    <input type="text" id="newIP" placeholder="New IP">
+    <input type="text" id="newMAC" placeholder="New MAC">
+    <button onclick="addEntry()">Add Entry</button>
+  </div>
+
+  <table id="arpTable">
+    <thead>
+      <tr>
+        <th>IP Address</th>
+        <th>MAC Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% arpTable.forEach(entry => { %>
+        <tr>
+          <td><%= entry.ip %></td>
+          <td><%= entry.mac %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <div id="result"></div>
+
+  <div class="content">
+    <h2>What is ARP?</h2>
+    <p>
+      The Address Resolution Protocol (ARP) is a network protocol used to map an IP address to a MAC address within a local area network (LAN). ARP operates at the Data Link Layer (Layer 2) of the OSI model and is essential for devices to communicate within a network.
+    </p>
+    <p>
+      When a device wants to communicate with another device on the same LAN, it needs to know the MAC address associated with the destination device's IP address. If the sender doesn't have this information, it sends an ARP request to the network.
+    </p>
+    <h2>How ARP Works</h2>
+    <p>
+      The ARP process involves two main steps:
+    </p>
+    <ol>
+      <li><strong>ARP Request:</strong> The sender broadcasts an ARP request packet to all devices on the LAN, asking, "Who has this IP address? Please send your MAC address."</li>
+      <li><strong>ARP Reply:</strong> The device with the matching IP address responds with an ARP reply, providing its MAC address.</li>
+    </ol>
+    <p>
+      The sender then updates its ARP table with the new IP-MAC mapping for future communications.
+    </p>
+    <h2>ARP Packet Structure</h2>
+    <p>
+      An ARP packet contains the following fields:
+    </p>
+    <ul>
+      <li><strong>Hardware Type:</strong> Specifies the type of hardware used for the network (e.g., Ethernet).</li>
+      <li><strong>Protocol Type:</strong> Specifies the protocol used at the Network Layer (e.g., IPv4).</li>
+      <li><strong>Hardware Address Length:</strong> Length of the MAC address (typically 6 bytes for Ethernet).</li>
+      <li><strong>Protocol Address Length:</strong> Length of the IP address (typically 4 bytes for IPv4).</li>
+      <li><strong>Operation:</strong> Indicates whether the packet is a request (1) or a reply (2).</li>
+      <li><strong>Sender MAC Address:</strong> MAC address of the sender.</li>
+      <li><strong>Sender IP Address:</strong> IP address of the sender.</li>
+      <li><strong>Target MAC Address:</strong> MAC address of the target (set to 0 in a request).</li>
+      <li><strong>Target IP Address:</strong> IP address of the target.</li>
+    </ul>
+    <p>
+      This structure allows devices to map IP addresses to MAC addresses effectively.
+    </p>
+    <h2>ARP Spoofing</h2>
+    <p>
+      ARP spoofing (or ARP poisoning) is a technique where a malicious actor sends false ARP messages onto a network. This can lead to various attacks, such as man-in-the-middle attacks, where the attacker intercepts or manipulates communication between devices.
+    </p>
+    <p>
+      It's important to secure networks against ARP spoofing by using techniques like static ARP entries, dynamic ARP inspection, and employing security protocols.
+    </p>
+    <h2>Visual Representation</h2>
+    <p>
+      Below is a diagram illustrating the ARP process:
+    </p>
+    <img src="https://www.geeksforgeeks.org/wp-content/uploads/arp.gif" alt="ARP Process Diagram">
+  </div>
+
+  <script>
+    let arpTable = <%- JSON.stringify(arpTable) %>;
+
+    function renderTable() {
+      const tbody = document.querySelector('#arpTable tbody');
+      tbody.innerHTML = '';
+      arpTable.forEach(entry => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${entry.ip}</td><td>${entry.mac}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function sendARP() {
+      const ip = document.getElementById('ipInput').value;
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = '';
+
+      const reqDiv = document.createElement('div');
+      reqDiv.className = 'arp-request';
+      reqDiv.innerText = `ARP Request → ${ip}`;
+      resultDiv.appendChild(reqDiv);
+      setTimeout(() => reqDiv.classList.add('show'), 50);
+
+      const entry = arpTable.find(e => e.ip === ip);
+      setTimeout(() => {
+        const replyDiv = document.createElement('div');
+        replyDiv.className = 'arp-reply';
+        if (entry) {
+          replyDiv.innerText = `ARP Reply: ${ip} → ${entry.mac}`;
+        } else {
+          replyDiv.innerText = `No entry found. Broadcasting...`;
+          replyDiv.classList.add('fail');
+        }
+        resultDiv.appendChild(replyDiv);
+        setTimeout(() => replyDiv.classList.add('show'), 50);
+      }, 1000);
+    }
+
+    function addEntry() {
+      const ip = document.getElementById('newIP').value.trim();
+      const mac = document.getElementById('newMAC').value.trim();
+      if (!ip || !mac) return alert('Enter both IP and MAC!');
+      if (arpTable.find(e => e.ip === ip)) return alert('IP already exists!');
+      arpTable.push({ ip, mac });
+      renderTable();
+      document.getElementById('newIP').value = '';
+      document.getElementById('newMAC').value = '';
+    }
+  </script>
+</body>
+</html>

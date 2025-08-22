@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #f4f4f4; 
+            margin: 0; 
+            padding: 0; 
+        }
+        h1 { margin-top: 20px; color: #333; }
+
+        #queueContainer { 
+            margin: 20px auto; 
+            width: 400px; 
+            min-height: 100px; 
+            border: 2px solid #333; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: row; /* Queue grows horizontally */
+            align-items: flex-end;
+            background: #fff;
+            overflow-x: auto;
+        }
+        .queue-item { 
+            background: #2196F3; 
+            color: white; 
+            margin: 5px; 
+            padding: 10px; 
+            border-radius: 5px; 
+            min-width: 60px; 
+            text-align: center;
+            transform: translateX(20px);
+            opacity: 0;
+            animation: slideIn 0.3s forwards;
+        }
+        @keyframes slideIn {
+            to { transform: translateX(0); opacity: 1; }
+        }
+        button { margin: 5px; padding: 10px 20px; cursor: pointer; }
+        input { padding: 8px; width: 120px; }
+
+        .content {
+            text-align: left;
+            margin: 40px auto;
+            max-width: 800px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        pre {
+            background: #222; 
+            color: #eee; 
+            padding: 10px; 
+            border-radius: 5px; 
+            overflow-x: auto;
+        }
+        table {
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #333; 
+            padding: 8px; 
+            text-align: center;
+        }
+        th { background: #2196F3; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Queue Visualizer</h1>
+
+    <input type="text" id="operationInput" placeholder="Enter value">
+    <button onclick="enqueueItem()">Enqueue</button>
+    <button onclick="dequeueItem()">Dequeue</button>
+
+    <div id="queueContainer"></div>
+
+    <a href="/">Back to Home</a>
+
+    <!-- Content Section -->
+    <div class="content">
+        <h2>What is a Queue?</h2>
+        <p>
+            A <b>queue</b> is a linear data structure that follows the <b>FIFO (First In, First Out)</b> principle. 
+            The first element added is the first one to be removed. 
+            It is widely used in scheduling, resource management, and buffering.
+        </p>
+
+        <h2>Code Snippets</h2>
+        <h3>Java</h3>
+        <pre>
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Main {
+    public static void main(String[] args) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(10);
+        queue.add(20);
+        System.out.println(queue.remove()); // 10
+    }
+}
+        </pre>
+
+        <h3>Python</h3>
+        <pre>
+from collections import deque
+
+queue = deque()
+queue.append(10)
+queue.append(20)
+print(queue.popleft())  # 10
+        </pre>
+
+        <h3>C</h3>
+        <pre>
+#define SIZE 100
+int queue[SIZE], front = 0, rear = -1;
+
+void enqueue(int val) {
+    queue[++rear] = val;
+}
+int dequeue() {
+    return queue[front++];
+}
+        </pre>
+
+        <h3>JavaScript</h3>
+        <pre>
+let queue = [];
+queue.push(10);
+queue.push(20);
+console.log(queue.shift()); // 10
+        </pre>
+
+        <h2>Time Complexity</h2>
+        <table>
+            <tr><th>Operation</th><th>Time Complexity</th></tr>
+            <tr><td>Enqueue</td><td>O(1)</td></tr>
+            <tr><td>Dequeue</td><td>O(1)</td></tr>
+            <tr><td>Peek</td><td>O(1)</td></tr>
+            <tr><td>Search</td><td>O(n)</td></tr>
+        </table>
+
+        <h2>Advantages</h2>
+        <ul>
+            <li>Efficient in resource scheduling (CPU, Disk, Printer)</li>
+            <li>Ideal for handling requests in real-time systems</li>
+            <li>Supports breadth-first search (BFS) in graphs</li>
+        </ul>
+
+        <h2>Disadvantages</h2>
+        <ul>
+            <li>Fixed size (in static implementation)</li>
+            <li>Random access is not possible</li>
+            <li>May lead to memory wastage (in simple queue)</li>
+        </ul>
+    </div>
+
+    <script src="/js/queue.js"></script>
+</body>
+</html>

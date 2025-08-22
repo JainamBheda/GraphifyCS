@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GraphifyCS Routing Simulator</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 { color: #333; margin-bottom: 30px; }
+
+#routingContainer, #algorithmContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.routing-section, .algorithm-section {
+    position: relative;
+    height: 250px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.section-title { font-weight: bold; margin-bottom: 15px; font-size: 1.2rem; }
+
+.router, .alg-node {
+    width: 60px;
+    height: 60px;
+    background: #4CAF50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+.router.active, .alg-node.active { 
+    background: #FF9800; 
+    transform: scale(1.3); 
+}
+
+.packet {
+    width: 20px;
+    height: 20px;
+    background: #FF9800;
+    border-radius: 50%;
+    position: absolute;
+    display: none;
+    z-index: 10;
+}
+
+.btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #2196F3;
+    color: white;
+    border: none;
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#algorithmGraph { 
+    width: 100%; 
+    height: 200px; 
+    border: 1px solid #ccc; 
+    margin-top: 10px; 
+    position: relative; 
+}
+
+.edge { 
+    stroke: #333; 
+    stroke-width: 2; 
+}
+
+.edge.active { 
+    stroke: #FF9800; 
+    stroke-width: 4; 
+}
+
+text { 
+    font-size: 14px; 
+    fill: white; 
+    pointer-events: none; 
+    user-select: none; 
+}
+
+.content {
+    text-align: left;
+    margin: 30px auto;
+    max-width: 900px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+</style>
+</head>
+<body>
+
+<h1>Routing Simulator</h1>
+
+<div id="routingContainer">
+
+  <!-- Static Routing -->
+  <div class="routing-section">
+    <div class="section-title">Static Routing</div>
+    <div class="router" id="staticR1" style="top:50px; left:50px;">R1</div>
+    <div class="router" id="staticR2" style="top:50px; left:150px;">R2</div>
+    <div class="router" id="staticR3" style="top:50px; left:250px;">R3</div>
+    <div class="router" id="staticR4" style="top:50px; left:350px;">R4</div>
+    <div class="router" id="staticR5" style="top:50px; left:450px;">R5</div>
+    <div class="packet" id="staticPacket"></div>
+    <button class="btn" onclick="simulatePacket('static')">Send Packet</button>
+  </div>
+
+  <!-- Dynamic Routing -->
+  <div class="routing-section">
+    <div class="section-title">Dynamic Routing</div>
+    <div class="router" id="dynamicR1" style="top:30px; left:50px;">R1</div>
+    <div class="router" id="dynamicR2" style="top:100px; left:150px;">R2</div>
+    <div class="router" id="dynamicR3" style="top:50px; left:250px;">R3</div>
+    <div class="router" id="dynamicR4" style="top:120px; left:350px;">R4</div>
+    <div class="router" id="dynamicR5" style="top:30px; left:450px;">R5</div>
+    <div class="packet" id="dynamicPacket"></div>
+    <button class="btn" onclick="simulatePacket('dynamic')">Send Packet</button>
+  </div>
+
+  <!-- Default Routing -->
+  <div class="routing-section">
+    <div class="section-title">Default Routing</div>
+    <div class="router" id="defaultR1" style="top:50px; left:50px;">R1</div>
+    <div class="router" id="defaultR2" style="top:30px; left:250px;">R2</div>
+    <div class="router" id="defaultR3" style="top:50px; left:450px;">R3</div>
+    <div class="packet" id="defaultPacket"></div>
+    <button class="btn" onclick="simulatePacket('default')">Send Packet</button>
+  </div>
+
+</div>
+
+<div id="algorithmContainer">
+  <div class="algorithm-section">
+    <div class="section-title">Routing Algorithm Simulation</div>
+    <select id="algorithmSelect">
+      <option value="dijkstra">Dijkstra</option>
+      <option value="bellmanFord">Bellman-Ford</option>
+    </select>
+    <button class="btn" onclick="simulateAlgorithm()">Run Simulation</button>
+
+    <svg id="algorithmGraph">
+      <line id="edge0" class="edge" x1="50" y1="50" x2="250" y2="50"></line>
+      <line id="edge1" class="edge" x1="50" y1="50" x2="150" y2="150"></line>
+      <line id="edge2" class="edge" x1="150" y1="150" x2="250" y2="50"></line>
+      <line id="edge3" class="edge" x1="250" y1="50" x2="350" y2="150"></line>
+      <line id="edge4" class="edge" x1="150" y1="150" x2="350" y2="150"></line>
+
+      <circle id="node0" class="alg-node" cx="50" cy="50" r="30"></circle>
+      <circle id="node1" class="alg-node" cx="250" cy="50" r="30"></circle>
+      <circle id="node2" class="alg-node" cx="150" cy="150" r="30"></circle>
+      <circle id="node3" class="alg-node" cx="350" cy="150" r="30"></circle>
+
+      <text x="50" y="55" text-anchor="middle">A</text>
+      <text x="250" y="55" text-anchor="middle">B</text>
+      <text x="150" y="155" text-anchor="middle">C</text>
+      <text x="350" y="155" text-anchor="middle">D</text>
+    </svg>
+    <div class="packet" id="algPacket"></div>
+  </div>
+</div>
+
+<div class="content">
+  <h2>Routing Types & Algorithms</h2>
+  <ul>
+    <li><b>Static Routing:</b> Predefined paths.</li>
+    <li><b>Dynamic Routing:</b> Adaptive paths.</li>
+    <li><b>Default Routing:</b> Fallback route.</li>
+    <li><b>Dijkstra:</b> Shortest path, non-negative weights.</li>
+    <li><b>Bellman-Ford:</b> Shortest path, supports negative weights.</li>
+  </ul>
+</div>
+
+<script>
+// Animate packet between HTML routers
+function simulatePacket(type){
+    const packets = {
+        static: {el: 'staticPacket', routers: ['staticR1','staticR2','staticR3','staticR4','staticR5']},
+        dynamic: {el: 'dynamicPacket', routers: ['dynamicR1','dynamicR2','dynamicR3','dynamicR4','dynamicR5']},
+        default: {el: 'defaultPacket', routers: ['defaultR1','defaultR2','defaultR3']}
+    };
+    const packet = document.getElementById(packets[type].el);
+    const routers = packets[type].routers;
+
+    packet.style.display = 'block';
+    let i = 0;
+
+    function moveNext() {
+        if(i >= routers.length){
+            packet.style.display='none';
+            return;
+        }
+        const node = document.getElementById(routers[i]);
+        const rect = node.getBoundingClientRect();
+        const parent = node.parentElement.getBoundingClientRect();
+        const left = rect.left - parent.left + rect.width/2 - 10;
+        const top = rect.top - parent.top + rect.height/2 - 10;
+
+        packet.style.transition='all 0.8s linear';
+        packet.style.left = left + 'px';
+        packet.style.top = top + 'px';
+
+        node.classList.add('active');
+        setTimeout(()=>node.classList.remove('active'),700);
+
+        i++;
+        setTimeout(moveNext,800);
+    }
+    moveNext();
+}
+
+// Routing Algorithm Simulation (SVG)
+const graphPaths = {
+    dijkstra: ['node0','node2','node3'],
+    bellmanFord: ['node0','node1','node3']
+};
+
+function simulateAlgorithm(){
+    const selected = document.getElementById('algorithmSelect').value;
+    const path = graphPaths[selected];
+    const packet = document.getElementById('algPacket');
+
+    // Remove previous active classes
+    document.querySelectorAll('.alg-node').forEach(n=>n.classList.remove('active'));
+    document.querySelectorAll('.edge').forEach(e=>e.classList.remove('active'));
+
+    // Remove old packet if exists inside SVG
+    if(packet.parentNode !== document.getElementById('algorithmGraph')){
+        document.getElementById('algorithmGraph').appendChild(packet);
+    }
+    packet.setAttribute('r', 10);
+    packet.setAttribute('fill', '#FF9800');
+    packet.style.display = 'block';
+
+    let i = 0;
+    function moveNext() {
+        if(i >= path.length){
+            packet.style.display = 'none';
+            return;
+        }
+        const node = document.getElementById(path[i]);
+        const cx = parseFloat(node.getAttribute('cx'));
+        const cy = parseFloat(node.getAttribute('cy'));
+
+        // Move packet using SVG attributes
+        packet.setAttribute('cx', cx);
+        packet.setAttribute('cy', cy);
+
+        node.classList.add('active');
+
+        if(i>0){
+            const prev = document.getElementById(path[i-1]);
+            document.querySelectorAll('.edge').forEach(edge=>{
+                if(
+                    (parseFloat(edge.getAttribute('x1'))===parseFloat(prev.getAttribute('cx')) &&
+                     parseFloat(edge.getAttribute('y1'))===parseFloat(prev.getAttribute('cy')) &&
+                     parseFloat(edge.getAttribute('x2'))===cx &&
+                     parseFloat(edge.getAttribute('y2'))===cy) ||
+                    (parseFloat(edge.getAttribute('x2'))===parseFloat(prev.getAttribute('cx')) &&
+                     parseFloat(edge.getAttribute('y2'))===parseFloat(prev.getAttribute('cy')) &&
+                     parseFloat(edge.getAttribute('x1'))===cx &&
+                     parseFloat(edge.getAttribute('y1'))===cy)
+                ){
+                    edge.classList.add('active');
+                }
+            });
+        }
+
+        i++;
+        setTimeout(moveNext, 1000);
+    }
+    moveNext();
+}
+
+</script>
+
+</body>
+</html>

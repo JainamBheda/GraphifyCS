@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      background-color: #f4f4f4; 
+      margin: 0; 
+      padding: 0; 
+    }
+    h1 { margin-top: 20px; color: #333; }
+
+    /* Array container */
+    #arrayContainer { 
+      margin: 20px auto; 
+      display: flex; 
+      justify-content: center; 
+      gap: 10px; 
+      flex-wrap: wrap;
+      max-width: 800px;
+      padding: 10px;
+      background: #fff;
+      border: 2px solid #333;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .array-item { 
+      width: 60px; 
+      height: 60px; 
+      background: #4CAF50; 
+      color: white; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-weight: bold;
+      border-radius: 8px;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    .array-item.highlight { 
+      background: #FF9800; 
+      transform: scale(1.1); 
+    }
+
+    /* Form */
+    .form-container {
+      margin: 20px auto;
+    }
+    input, select, button {
+      padding: 10px; 
+      margin: 5px;
+      border-radius: 5px;
+    }
+    button {
+      cursor: pointer;
+      background: #2196F3;
+      color: white;
+      border: none;
+    }
+
+    /* Content */
+    .content {
+      text-align: left;
+      margin: 40px auto;
+      max-width: 900px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    pre {
+      background: #222; 
+      color: #eee; 
+      padding: 10px; 
+      border-radius: 5px; 
+      overflow-x: auto;
+    }
+    table {
+      width: 100%; 
+      border-collapse: collapse; 
+      margin: 15px 0;
+    }
+    th, td {
+      border: 1px solid #333; 
+      padding: 8px; 
+      text-align: center;
+    }
+    th { background: #4CAF50; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Array Visualizer</h1>
+
+  <!-- Form -->
+  <div class="form-container">
+    <form action="/dsa/array" method="POST">
+      <input type="number" name="index" placeholder="Index" required>
+      <input type="text" name="value" placeholder="Value">
+      <select name="operation">
+        <option value="insert">Insert</option>
+        <option value="update">Update</option>
+        <option value="delete">Delete</option>
+        <option value="search">Search</option>
+      </select>
+      <button type="submit">Perform</button>
+    </form>
+  </div>
+
+  <!-- Array Display -->
+  <div id="arrayContainer"></div>
+
+  <a href="/">Back to Home</a>
+
+  <!-- Content Section -->
+  <div class="content">
+    <h2>What is an Array?</h2>
+    <p>
+      An <b>array</b> is a linear data structure that stores elements at <b>contiguous memory locations</b>. 
+      It allows random access using indexes, making it one of the most widely used structures.
+    </p>
+
+    <h2>Code Snippets</h2>
+    <h3>Java</h3>
+    <pre>
+int arr[] = new int[5];
+arr[0] = 10;
+arr[1] = 20;
+System.out.println(arr[1]); // 20
+    </pre>
+
+    <h3>Python</h3>
+    <pre>
+arr = [10, 20, 30]
+arr[1] = 25
+print(arr[1])  # 25
+    </pre>
+
+    <h3>C</h3>
+    <pre>
+int arr[5];
+arr[0] = 10;
+arr[1] = 20;
+printf("%d", arr[1]); // 20
+    </pre>
+
+    <h3>JavaScript</h3>
+    <pre>
+let arr = [10, 20, 30];
+arr[1] = 25;
+console.log(arr[1]); // 25
+    </pre>
+
+    <h2>Time Complexity</h2>
+    <table>
+      <tr><th>Operation</th><th>Time Complexity</th></tr>
+      <tr><td>Access</td><td>O(1)</td></tr>
+      <tr><td>Update</td><td>O(1)</td></tr>
+      <tr><td>Insert (end)</td><td>O(1)</td></tr>
+      <tr><td>Insert (middle)</td><td>O(n)</td></tr>
+      <tr><td>Delete</td><td>O(n)</td></tr>
+      <tr><td>Search</td><td>O(n)</td></tr>
+    </table>
+
+    <h2>Advantages</h2>
+    <ul>
+      <li>Fast random access using indexes</li>
+      <li>Easy to implement and use</li>
+      <li>Efficient for fixed-size collections</li>
+    </ul>
+
+    <h2>Disadvantages</h2>
+    <ul>
+      <li>Fixed size (cannot grow dynamically)</li>
+      <li>Insertion/Deletion in middle is costly</li>
+      <li>Wastes memory if not fully utilized</li>
+    </ul>
+  </div>
+
+<script src="/js/array.js"></script>
+<script>
+  // ✅ Properly attach backend arrayData to frontend
+  window.arrayData = <%- JSON.stringify(arrayData) %>;
+</script>
+
+
+
+</body>
+</html>
