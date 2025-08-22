@@ -52,7 +52,7 @@
             border-radius: 5px;
             width: 220px;
             text-align: left;
-            z-index: 1000; /* keep above everything */
+            z-index: 1000;
         }
         .layer:hover .tooltip {
             display: block;
@@ -101,6 +101,19 @@
         @keyframes fadeInUp {
             from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Subnetting / Supernetting */
+        .subnet-step {
+            background: #673AB7;
+            color: white;
+            margin: 6px auto;
+            padding: 10px;
+            border-radius: 6px;
+            max-width: 500px;
+            text-align: center;
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
         }
     </style>
 </head>
@@ -161,6 +174,19 @@
 
         <div id="animationArea" style="margin-top:20px; min-height:150px;">
             <!-- Steps appear here -->
+        </div>
+    </div>
+
+    <!-- Subnetting & Supernetting Simulator -->
+    <div class="content">
+        <h2>Subnetting & Supernetting Simulator (IPv4)</h2>
+        <input type="text" id="ipInput" placeholder="Enter IP (e.g., 192.168.1.0)" />
+        <input type="number" id="cidrInput" placeholder="CIDR (e.g., 24)" min="1" max="32" />
+        <button onclick="simulateSubnetting()">Simulate Subnetting</button>
+        <button onclick="simulateSupernetting()">Simulate Supernetting</button>
+
+        <div id="subnetAnimation" style="margin-top:20px; min-height:150px;">
+            <!-- Subnetting steps appear here -->
         </div>
     </div>
 
