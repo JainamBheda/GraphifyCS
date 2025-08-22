@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #f4f4f4; 
+            margin: 0; 
+            padding: 0; 
+        }
+        h1 { margin-top: 20px; color: #333; }
+
+        /* Layer Diagram */
+        #layerContainer {
+            margin: 20px auto;
+            width: 300px;
+            display: flex;
+            flex-direction: column-reverse;
+            border: 2px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .layer {
+            padding: 20px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            position: relative;
+        }
+        .layer:hover {
+            opacity: 0.9;
+        }
+
+        /* Different colors per layer */
+        .physical { background: #795548; }
+        .data-link { background: #607D8B; }
+        .network { background: #2196F3; }
+        .transport { background: #4CAF50; }
+        .application { background: #9C27B0; }
+
+        /* Tooltip box */
+        .tooltip {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 105%;
+            transform: translateY(-50%);
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            width: 200px;
+            text-align: left;
+            z-index: 10;
+        }
+        .layer:hover .tooltip {
+            display: block;
+        }
+
+        .content {
+            text-align: left;
+            margin: 40px auto;
+            max-width: 800px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        pre {
+            background: #222; 
+            color: #eee; 
+            padding: 10px; 
+            border-radius: 5px; 
+            overflow-x: auto;
+        }
+        table {
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #333; 
+            padding: 8px; 
+            text-align: center;
+        }
+        th { background: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+    <h1>TCP/IP Model Visualizer</h1>
+
+    <!-- TCP/IP Layer Diagram -->
+    <div id="layerContainer">
+        <div class="layer application">
+            Application Layer
+            <div class="tooltip">
+                Provides services for user applications.<br>
+                <b>Protocols:</b> HTTP, FTP, SMTP, DNS
+            </div>
+        </div>
+        <div class="layer transport">
+            Transport Layer
+            <div class="tooltip">
+                Ensures reliable or fast delivery of data.<br>
+                <b>Protocols:</b> TCP, UDP
+            </div>
+        </div>
+        <div class="layer network">
+            Network Layer
+            <div class="tooltip">
+                Handles addressing and routing of packets.<br>
+                <b>Protocols:</b> IP, ICMP, ARP
+            </div>
+        </div>
+        <div class="layer data-link">
+            Data Link Layer
+            <div class="tooltip">
+                Ensures error-free transfer between nodes.<br>
+                <b>Protocols:</b> Ethernet, PPP, Wi-Fi
+            </div>
+        </div>
+        <div class="layer physical">
+            Physical Layer
+            <div class="tooltip">
+                Deals with transmission of raw bits over medium.<br>
+                <b>Examples:</b> Cables, Hubs, Radio signals
+            </div>
+        </div>
+    </div>
+
+    <a href="/">Back to Home</a>
+
+    <!-- Content Section -->
+    <div class="content">
+        <h2>Introduction</h2>
+        <p>
+            The <b>TCP/IP model</b> is a framework for communication over networks. 
+            It consists of five layers that define how data should be packaged, transmitted, 
+            routed, and received.
+        </p>
+
+        <h2>Data Encapsulation</h2>
+        <p>
+            Each layer adds its own header to the data before passing it to the next layer. 
+            This process is called <b>encapsulation</b>. At the receiving end, the headers 
+            are removed in reverse order (decapsulation).
+        </p>
+
+        <h2>TCP vs UDP</h2>
+        <table>
+            <tr><th>Feature</th><th>TCP</th><th>UDP</th></tr>
+            <tr><td>Connection</td><td>Connection-oriented</td><td>Connectionless</td></tr>
+            <tr><td>Reliability</td><td>Reliable, ensures delivery</td><td>No guarantee</td></tr>
+            <tr><td>Speed</td><td>Slower</td><td>Faster</td></tr>
+            <tr><td>Use Cases</td><td>Web, Email, File transfer</td><td>Video streaming, Gaming</td></tr>
+        </table>
+
+        <h2>Advantages</h2>
+        <ul>
+            <li>Standard for modern internet communication</li>
+            <li>Supports multiple routing protocols</li>
+            <li>Flexible and scalable</li>
+        </ul>
+
+        <h2>Disadvantages</h2>
+        <ul>
+            <li>Does not strictly separate services like OSI</li>
+            <li>Harder to replace or upgrade protocols</li>
+        </ul>
+    </div>
+
+    <script src="/js/tcpip.js"></script>
+</body>
+</html>
