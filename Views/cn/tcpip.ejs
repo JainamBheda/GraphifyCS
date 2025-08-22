@@ -86,6 +86,23 @@
             text-align: center;
         }
         th { background: #4CAF50; color: white; }
+
+        /* Encapsulation animation */
+        .encap-step {
+            background: #2196F3;
+            color: white;
+            margin: 8px auto;
+            padding: 10px;
+            border-radius: 6px;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -131,6 +148,22 @@
     </div>
 
     <a href="/">Back to Home</a>
+
+    <!-- Encapsulation Simulator -->
+    <div class="content">
+        <h2>Encapsulation Simulator</h2>
+        <input type="text" id="messageInput" placeholder="Enter message" />
+        <select id="protocolSelect">
+            <option value="TCP">TCP</option>
+            <option value="UDP">UDP</option>
+        </select>
+        <button onclick="simulateEncapsulation()">Simulate Encapsulation</button>
+        <button onclick="simulateDecapsulation()">Simulate Decapsulation</button>
+
+        <div id="animationArea" style="margin-top:20px; min-height:150px;">
+            <!-- Steps appear here -->
+        </div>
+    </div>
 
     <!-- Content Section -->
     <div class="content">
