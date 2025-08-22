@@ -27,3 +27,9 @@ exports.getRoutingPage = (req, res) => {
     routingTable
   });
 };
+
+exports.getTCPIPPage = (req, res) => {
+  res.render('cn/tcpip', {
+    title: 'TCP/IP Visualizer'
+  });
+};
